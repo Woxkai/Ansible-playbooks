@@ -1,0 +1,39 @@
+___
+
+- name : Configure webserver with nginx
+
+	hosts : webservers
+
+	become: true
+
+	become_user: root
+
+  tasks :
+
+	- name: Install nginx
+
+	  yum:
+		name : "nginx"
+		update_cache: yes
+
+	- name: copy nginx config file
+	template :
+		src: nginx.conf.j2
+		dest: /etc/nginx/nginx.conf
+
+	- name: restart nginx
+	  service:
+		name: nginx
+		state: restarted
+
+	- user: name=worldy password={{password}}
+
+	
+	- name : créer un fichier hello wordl
+	  file :
+		path: /Home/Hello_World.txt
+		recurse: yes
+		state: touch
+		owner: worldy
+		line: Hello World !
+		create: yes
